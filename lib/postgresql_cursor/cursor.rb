@@ -234,11 +234,7 @@ module PostgreSQLCursor
         fmod  = @result.fmod i
         types[fname] = @connection.get_type_map.fetch(ftype, fmod) { |oid, mod|
           warn "unknown OID: #{fname}(#{oid}) (#{sql})"
-          if ::ActiveRecord::VERSION::MAJOR <= 4
-            ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::OID::Identity.new
-          else
-            ActiveRecord::ConnectionAdapters::PostgreSQL::OID::Identity.new
-          end
+          ::ActiveRecord::Type::Value.new
         }
       end
 
